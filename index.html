@@ -1313,6 +1313,59 @@
             }
         }
 
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 25px rgba(59, 130, 246, 0.5);
+        }
+
+        .back-to-top svg {
+            width: 24px;
+            height: 24px;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+
+            .back-to-top svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
         /* Animations */
         .fade-in {
             opacity: 0;
@@ -1470,15 +1523,10 @@
                 <div class="about-content">
                     <h3>Driven by Security, Guided by Excellence</h3>
                     <p>
-                        I'm a graduate student at Southern Methodist University's Bobby B. Lyle School of Engineering, 
-                        pursuing a Master of Science in Cybersecurity. My academic journey includes a Bachelor's degree 
-                        in Cyber and Data Security Technology from The University of Arizona Global Campus.
+                        Security isn't just my major — it's how I think. I'm earning my M.S. in Cybersecurity at Southern Methodist University's Lyle School of Engineering after completing my B.S. in Cyber and Data Security at the University of Arizona Global Campus.
                     </p>
                     <p>
-                        Currently serving as an OIT Student Assistant at SMU, I provide front-line technical support 
-                        while developing expertise in network security, penetration testing, and digital forensics. 
-                        My experience spans from IT support to cybersecurity awareness campaigns, giving me a 
-                        well-rounded perspective on organizational security.
+                        As an OIT Student Assistant, I solve real problems for real users every day, but my focus extends beyond support tickets: I'm drawn to penetration testing, threat hunting, and digital forensics — the work that stops breaches before they make headlines. From running phishing awareness campaigns to analyzing disk images, I've built a hands-on toolkit for defending the systems people depend on.
                     </p>
                     <div class="about-stats">
                         <div class="stat-card">
@@ -1502,13 +1550,13 @@
                 <div class="about-credentials">
                     <div class="credential-card">
                         <div class="credential-icon">🎓</div>
-                        <div class="credential-title">Southern Methodist University</div>
+                        <div class="credential-title">Southern Methodist University (SMU)</div>
                         <div class="credential-detail">M.S. in Cybersecurity • Expected May 2027</div>
                         <span class="credential-highlight">In Progress</span>
                     </div>
                     <div class="credential-card">
                         <div class="credential-icon">📜</div>
-                        <div class="credential-title">University of Arizona Global Campus</div>
+                        <div class="credential-title">University of Arizona Global Campus (UAGC)</div>
                         <div class="credential-detail">B.S. in Cyber and Data Security Technology • April 2025</div>
                         <span class="credential-highlight">Completed</span>
                     </div>
@@ -1971,6 +2019,13 @@
         </div>
     </footer>
 
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
     <script>
         // Set current year in footer
         document.getElementById('currentYear').textContent = new Date().getFullYear();
@@ -2039,6 +2094,8 @@
         });
 
         // Nav background on scroll
+        const backToTop = document.getElementById('backToTop');
+        
         window.addEventListener('scroll', () => {
             const nav = document.querySelector('nav');
             if (window.scrollY > 100) {
@@ -2047,6 +2104,21 @@
                 nav.style.padding = '20px 0';
             }
             updateNavBackground();
+
+            // Back to top button visibility
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // Back to top click handler
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
 
         // Mobile menu toggle
