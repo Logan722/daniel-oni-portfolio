@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | Daniel Oni</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Daniel Oni's blog — notes on detection engineering, SOC home labs, Web3 security, and cybersecurity graduate study at SMU.">
+    <meta name="keywords" content="cybersecurity blog, SOC, detection engineering, threat hunting, Web3 security, SMU, Daniel Oni">
+    <meta name="author" content="Daniel Oni">
+
+    <!-- Open Graph / LinkedIn -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Blog | Daniel Oni">
+    <meta property="og:description" content="Notes on detection engineering, SOC home labs, Web3 security, and cybersecurity graduate study.">
+    <meta property="og:image" content="https://logan722.github.io/daniel-oni-portfolio/profile.png">
+    <meta property="og:url" content="https://logan722.github.io/daniel-oni-portfolio/blog.html">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0f1a;
+            --bg-secondary: #111827;
+            --bg-card: #1a2235;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #06b6d4;
+            --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: rgba(59, 130, 246, 0.15);
+            --glow: 0 0 40px rgba(59, 130, 246, 0.15);
+        }
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --border-color: rgba(15, 23, 42, 0.1);
+            --glow: 0 4px 20px rgba(59, 130, 246, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.7; overflow-x: hidden; }
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px; pointer-events: none; z-index: 0;
+        }
+        [data-theme="light"] body::before {
+            background-image: linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; padding: 20px 0;
+            background: rgba(10, 15, 26, 0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color); z-index: 1000; transition: all 0.3s ease;
+        }
+        [data-theme="light"] nav { background: rgba(255, 255, 255, 0.9); }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 600; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+        .nav-right { display: flex; align-items: center; gap: 16px; order: 3; }
+        .theme-toggle { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; cursor: pointer; transition: all 0.3s ease; }
+        .theme-toggle:hover { border-color: var(--accent-primary); background: rgba(59, 130, 246, 0.1); }
+        .theme-toggle svg { width: 20px; height: 20px; color: var(--text-secondary); transition: all 0.3s ease; }
+        .theme-toggle .sun-icon { display: none; }
+        .theme-toggle .moon-icon { display: block; }
+        [data-theme="light"] .theme-toggle .sun-icon { display: block; }
+        [data-theme="light"] .theme-toggle .moon-icon { display: none; }
+        .mobile-menu-btn { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 30px; height: 30px; background: transparent; border: none; cursor: pointer; padding: 0; z-index: 1001; }
+        .mobile-menu-btn span { display: block; width: 100%; height: 2px; background: var(--text-primary); transition: all 0.3s ease; }
+        .mobile-menu-btn.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .mobile-menu-btn.active span:nth-child(2) { opacity: 0; }
+        .mobile-menu-btn.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        .nav-links { display: flex; gap: 40px; list-style: none; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.5px; transition: color 0.3s ease; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent-gradient); transition: width 0.3s ease; }
+        .nav-links a:hover { color: var(--text-primary); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a.active { color: var(--text-primary); }
+        .nav-links a.active::after { width: 100%; }
+        @media (max-width: 768px) {
+            .mobile-menu-btn { display: flex; }
+            .nav-links { position: fixed; top: 0; right: -100%; width: 70%; max-width: 300px; height: 100vh; background: var(--bg-secondary); flex-direction: column; justify-content: center; align-items: center; gap: 32px; transition: right 0.3s ease; border-left: 1px solid var(--border-color); }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 1.1rem; }
+        }
+
+        .section-label { display: inline-block; padding: 8px 16px; background: rgba(59, 130, 246, 0.1); border: 1px solid var(--border-color); border-radius: 50px; font-size: 0.8rem; font-weight: 600; color: var(--accent-primary); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 600; margin-bottom: 16px; }
+        .section-subtitle { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+
+        /* ---- Blog layout ---- */
+        .blog-section { padding: 160px 0 100px; min-height: 80vh; }
+        .blog-header { text-align: center; margin-bottom: 56px; }
+
+        .post-list { display: flex; flex-direction: column; gap: 20px; max-width: 820px; margin: 0 auto; }
+        .post-card { display: block; width: 100%; text-align: left; cursor: pointer; font-family: inherit; color: inherit; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 28px 32px; transition: all 0.3s ease; }
+        .post-card:hover, .post-card:focus-visible { transform: translateY(-4px); border-color: var(--accent-primary); box-shadow: var(--glow); outline: none; }
+        .post-card-meta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+        .post-tag { display: inline-block; padding: 6px 14px; background: rgba(59, 130, 246, 0.1); border-radius: 50px; font-size: 0.75rem; font-weight: 600; color: var(--accent-primary); text-transform: uppercase; letter-spacing: 0.5px; }
+        .post-date { color: var(--text-muted); font-size: 0.85rem; }
+        .post-card-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 600; line-height: 1.3; margin-bottom: 10px; color: var(--text-primary); }
+        .post-card-excerpt { color: var(--text-secondary); font-size: 0.98rem; line-height: 1.7; }
+        .post-card-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+        .mini-tag { padding: 6px 12px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.8rem; color: var(--accent-secondary); font-weight: 500; }
+        .read-more { display: inline-flex; align-items: center; gap: 6px; margin-top: 18px; color: var(--accent-primary); font-size: 0.9rem; font-weight: 600; }
+        .read-more .arw { transition: transform 0.3s ease; }
+        .post-card:hover .read-more .arw { transform: translateX(4px); }
+
+        .blog-empty { max-width: 640px; margin: 0 auto; text-align: center; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 48px 32px; color: var(--text-secondary); }
+        .blog-empty h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--text-primary); margin-bottom: 12px; }
+        .blog-empty code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--bg-secondary); padding: 2px 8px; border-radius: 6px; color: var(--accent-secondary); font-size: 0.9em; }
+
+        /* ---- Article view ---- */
+        #articleView { max-width: 760px; margin: 0 auto; }
+        .back-link { display: inline-flex; align-items: center; gap: 8px; background: none; border: none; cursor: pointer; font-family: inherit; font-size: 0.9rem; color: var(--text-secondary); padding: 8px 0; margin-bottom: 28px; transition: color 0.3s ease; }
+        .back-link:hover { color: var(--accent-primary); }
+        .article-meta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
+        .article-date { color: var(--text-muted); font-size: 0.9rem; }
+        .article-title { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 600; line-height: 1.15; margin-bottom: 8px; color: var(--text-primary); }
+
+        .article-body { margin-top: 32px; font-size: 1.05rem; color: var(--text-secondary); }
+        .article-body > *:first-child { margin-top: 0; }
+        .article-body h2 { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 600; color: var(--text-primary); margin: 40px 0 16px; }
+        .article-body h3 { font-size: 1.3rem; font-weight: 600; color: var(--text-primary); margin: 32px 0 12px; }
+        .article-body p { margin-bottom: 20px; line-height: 1.8; }
+        .article-body a { color: var(--accent-primary); text-decoration: none; border-bottom: 1px solid rgba(59, 130, 246, 0.4); }
+        .article-body a:hover { border-bottom-color: var(--accent-primary); }
+        .article-body ul, .article-body ol { margin: 0 0 20px; padding-left: 24px; }
+        .article-body li { margin-bottom: 8px; line-height: 1.8; }
+        .article-body strong { color: var(--text-primary); font-weight: 600; }
+        .article-body blockquote { margin: 0 0 20px; padding: 4px 20px; border-left: 3px solid var(--accent-primary); color: var(--text-secondary); font-style: italic; background: rgba(59, 130, 246, 0.04); border-radius: 0 8px 8px 0; }
+        .article-body code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: var(--bg-secondary); color: var(--accent-secondary); padding: 2px 7px; border-radius: 6px; }
+        .article-body pre { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; overflow-x: auto; margin: 0 0 24px; }
+        .article-body pre code { background: none; color: var(--text-primary); padding: 0; font-size: 0.88rem; line-height: 1.7; }
+        .article-body img { max-width: 100%; border-radius: 12px; border: 1px solid var(--border-color); margin: 8px 0 24px; }
+        .article-body hr { border: none; border-top: 1px solid var(--border-color); margin: 36px 0; }
+        .article-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--border-color); }
+
+        footer { padding: 60px 0 40px; border-top: 1px solid var(--border-color); background: var(--bg-secondary); }
+        .footer-content { display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; margin-bottom: 40px; }
+        .footer-brand .logo { margin-bottom: 12px; display: inline-block; }
+        .footer-brand p { color: var(--text-muted); font-size: 0.9rem; max-width: 300px; }
+        .footer-links { display: flex; gap: 60px; }
+        .footer-column h4 { color: var(--text-primary); font-size: 0.9rem; font-weight: 600; margin-bottom: 16px; }
+        .footer-column ul { list-style: none; }
+        .footer-column li { margin-bottom: 10px; }
+        .footer-column a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.3s ease; }
+        .footer-column a:hover { color: var(--accent-primary); }
+        .footer-bottom { padding-top: 24px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+        .footer-bottom p { color: var(--text-muted); font-size: 0.85rem; }
+        @media (max-width: 768px) {
+            .footer-content { flex-direction: column; text-align: center; }
+            .footer-brand p { max-width: 100%; }
+            .footer-links { flex-direction: column; gap: 32px; }
+            .footer-bottom { flex-direction: column; gap: 16px; }
+        }
+
+        .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: var(--accent-gradient); border: none; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s ease; z-index: 999; box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4); }
+        .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+        .back-to-top:hover { transform: translateY(-4px); box-shadow: 0 6px 25px rgba(59, 130, 246, 0.5); }
+        .back-to-top svg { width: 24px; height: 24px; color: white; }
+
+        @media (max-width: 768px) {
+            .section-title { font-size: 2.2rem; }
+            .blog-section { padding: 120px 0 80px; }
+            .article-title { font-size: 1.9rem; }
+            .post-card { padding: 24px 22px; }
+            .back-to-top { bottom: 20px; right: 20px; width: 45px; height: 45px; }
+            .back-to-top svg { width: 20px; height: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">Daniel Oni</a>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#skills">Skills</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#organizations">Community</a></li>
+                <li><a href="blog.html" class="active">Blog</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="blog-section">
+        <div class="container">
+            <!-- LIST VIEW -->
+            <div id="listView">
+                <div class="blog-header">
+                    <span class="section-label">Writing</span>
+                    <h2 class="section-title">Blog</h2>
+                    <p class="section-subtitle">Notes on detection, SOC home labs, Web3 security, and the road through grad school.</p>
+                </div>
+                <div class="post-list" id="postList"></div>
+                <div class="blog-empty" id="blogEmpty" style="display:none">
+                    <h3>Posts are loading from files</h3>
+                    <p>If you're seeing this, the post list couldn't be read. On GitHub Pages it works automatically. Opening <code>blog.html</code> directly from your hard drive won't work because browsers block local file reads — run a local server or push to GitHub to preview.</p>
+                </div>
+            </div>
+
+            <!-- ARTICLE VIEW -->
+            <article id="articleView" style="display:none">
+                <button class="back-link" id="backLink">&larr; All posts</button>
+                <div class="article-head">
+                    <div class="article-meta"><span class="post-tag" id="artCategory"></span><span class="article-date" id="artDate"></span></div>
+                    <h1 class="article-title" id="artTitle"></h1>
+                </div>
+                <div class="article-body" id="artBody"></div>
+                <div class="article-tags" id="artTags"></div>
+            </article>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand"><a href="index.html" class="logo">Daniel Oni</a><p>Cybersecurity professional passionate about protecting digital systems and building secure solutions.</p></div>
+                <div class="footer-links">
+                    <div class="footer-column"><h4>Navigation</h4><ul><li><a href="index.html#about">About</a></li><li><a href="index.html#projects">Projects</a></li><li><a href="blog.html">Blog</a></li><li><a href="index.html#contact">Contact</a></li></ul></div>
+                    <div class="footer-column"><h4>Connect</h4><ul><li><a href="https://linkedin.com/in/daniel-oni-mscs" target="_blank">LinkedIn</a></li><li><a href="https://github.com/Logan722" target="_blank">GitHub</a></li></ul></div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© <span id="currentYear"></span> Daniel Oni. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" aria-label="Back to top"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg></button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+    <script>
+        // ---- Theme (shared localStorage key with index.html) ----
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        function updateNavBackground() {
+            const nav = document.querySelector('nav');
+            const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+            nav.style.background = window.scrollY > 100 ? (isDark ? 'rgba(10, 15, 26, 0.95)' : 'rgba(255, 255, 255, 0.95)') : (isDark ? 'rgba(10, 15, 26, 0.85)' : 'rgba(255, 255, 255, 0.9)');
+        }
+        themeToggle.addEventListener('click', () => {
+            const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateNavBackground();
+        });
+        updateNavBackground();
+
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => { document.querySelector('nav').style.padding = window.scrollY > 100 ? '12px 0' : '20px 0'; updateNavBackground(); backToTop.classList.toggle('visible', window.scrollY > 500); });
+        backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        mobileMenuBtn.addEventListener('click', () => { mobileMenuBtn.classList.toggle('active'); navLinks.classList.toggle('active'); });
+        navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => { mobileMenuBtn.classList.remove('active'); navLinks.classList.remove('active'); }));
+
+        // ---- Blog engine ----
+        const MANIFEST = 'posts/posts.json';
+        let posts = [];
+
+        function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+        async function loadPosts() {
+            try {
+                const res = await fetch(MANIFEST, { cache: 'no-cache' });
+                if (!res.ok) throw new Error('manifest ' + res.status);
+                posts = await res.json();
+                renderList();
+                const slug = new URLSearchParams(location.search).get('post');
+                if (slug) openPost(slug, false);
+            } catch (e) {
+                document.getElementById('postList').style.display = 'none';
+                document.getElementById('blogEmpty').style.display = 'block';
+                console.error('Could not load posts:', e);
+            }
+        }
+
+        function renderList() {
+            const el = document.getElementById('postList');
+            el.innerHTML = '';
+            if (!posts.length) {
+                document.getElementById('blogEmpty').style.display = 'block';
+                document.getElementById('blogEmpty').querySelector('h3').textContent = 'No posts yet';
+                document.getElementById('blogEmpty').querySelector('p').textContent = 'New posts will show up here.';
+                return;
+            }
+            posts.forEach(p => {
+                const tags = (p.tags || []).map(t => `<span class="mini-tag">${esc(t)}</span>`).join('');
+                const card = document.createElement('button');
+                card.className = 'post-card';
+                card.setAttribute('aria-label', 'Read: ' + p.title);
+                card.addEventListener('click', () => openPost(p.slug));
+                card.innerHTML =
+                    `<div class="post-card-meta"><span class="post-tag">${esc(p.category || 'Post')}</span><span class="post-date">${esc(p.date || '')}</span></div>` +
+                    `<h2 class="post-card-title">${esc(p.title)}</h2>` +
+                    `<p class="post-card-excerpt">${esc(p.excerpt || '')}</p>` +
+                    (tags ? `<div class="post-card-tags">${tags}</div>` : '') +
+                    `<span class="read-more">Read <span class="arw">&rarr;</span></span>`;
+                el.appendChild(card);
+            });
+        }
+
+        async function openPost(slug, push = true) {
+            const meta = posts.find(p => p.slug === slug);
+            if (!meta) { showList(false); return; }
+            try {
+                const res = await fetch('posts/' + slug + '.md', { cache: 'no-cache' });
+                if (!res.ok) throw new Error('post ' + res.status);
+                const md = await res.text();
+                document.getElementById('artCategory').textContent = meta.category || 'Post';
+                document.getElementById('artDate').textContent = meta.date || '';
+                document.getElementById('artTitle').textContent = meta.title;
+                document.getElementById('artBody').innerHTML = marked.parse(md);
+                document.getElementById('artTags').innerHTML = (meta.tags || []).map(t => `<span class="mini-tag">${esc(t)}</span>`).join('');
+                document.title = meta.title + ' | Daniel Oni';
+                document.getElementById('listView').style.display = 'none';
+                document.getElementById('articleView').style.display = 'block';
+                if (push) history.pushState({ slug }, '', '?post=' + encodeURIComponent(slug));
+                window.scrollTo({ top: 0, behavior: 'instant' });
+            } catch (e) {
+                console.error('Could not load post:', e);
+            }
+        }
+
+        function showList(push = true) {
+            document.getElementById('articleView').style.display = 'none';
+            document.getElementById('listView').style.display = 'block';
+            document.title = 'Blog | Daniel Oni';
+            if (push) history.pushState({}, '', location.pathname);
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+
+        document.getElementById('backLink').addEventListener('click', () => showList());
+        window.addEventListener('popstate', (e) => {
+            const slug = (e.state && e.state.slug) || new URLSearchParams(location.search).get('post');
+            if (slug) openPost(slug, false); else showList(false);
+        });
+
+        loadPosts();
+    </script>
+</body>
+</html>

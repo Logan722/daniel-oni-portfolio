@@ -1,0 +1,18 @@
+[
+  {
+    "slug": "welcome",
+    "title": "Why I'm Starting This Blog",
+    "date": "Oct 27, 2026",
+    "category": "Intro",
+    "excerpt": "A place to think out loud about detection, home labs, and building a career in security.",
+    "tags": ["Intro", "Career"]
+  },
+  {
+    "slug": "writing-posts",
+    "title": "How This Blog Works (and How I Add Posts)",
+    "date": "Oct 27, 2026",
+    "category": "Meta",
+    "excerpt": "The three-step workflow for publishing a new post, plus a quick tour of the formatting you can use.",
+    "tags": ["Meta", "Markdown"]
+  }
+]
